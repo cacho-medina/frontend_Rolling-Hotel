@@ -26,7 +26,6 @@ function Cargar(props) {
         const habDis = await check(camas, entrada, salida);
         setDisponibles(habDis);
     }
-
     const onSubmit = async (data) => {
         data.userId = JSON.parse(sessionStorage.getItem("usuario")).id;
         const res = await postReserva(data);

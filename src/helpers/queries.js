@@ -201,10 +201,10 @@ export const postReserva = async (data) => {
 };
 
 const checkFree = (entrada, salida, fecha) => {
-    if (fecha[0] === "") {
+    if (fecha[0][0] === "") {
         return true;
     } else {
-        return salida < fecha[0] || entrada > fecha[1];
+        return salida < fecha[0][0] || entrada > fecha[0][1];
     }
 };
 
@@ -225,8 +225,7 @@ export const check = async (camas, entrada, salida) => {
         if (entrada > salida) {
             throw new Error("Fecha no valida");
         }
-
-        const habitaciones = obtenerHabDis(filteredCama, entrada, salida);
+        const habitaciones = await obtenerHabDis(filteredCama, entrada, salida);
         return habitaciones;
     } catch (error) {
         console.error(error);
