@@ -140,6 +140,10 @@ export const registrarUsuario = async (data) => {
     }
 };
 
+
+//RESERVAS-----------------------------------------------------------
+
+
 export const getReservas = async () => {
     try {
         const res = await fetch(api_reservas);
@@ -161,7 +165,6 @@ export const getReservasByUserId = async (id) => {
     try {
         const res = await getReservas();
         const reservas = await res.json();
-
         const userReservas = reservas.filter((item) => item.userId === id);
         return userReservas;
     } catch (error) {
@@ -209,8 +212,9 @@ const checkFree = (entrada, salida, fecha) => {
 };
 
 const obtenerHabDis = async (habitaciones, entrada, salida) => {
+    console.log(hab.fechaOcupada[0])
     const disponibles = habitaciones.filter((hab) =>
-        checkFree(entrada, salida, hab.fechaOcupada)
+        checkFree(entrada, salida, hab.fechaOcupada[0])
     );
     return disponibles;
 };
