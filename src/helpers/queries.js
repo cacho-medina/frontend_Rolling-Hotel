@@ -140,9 +140,7 @@ export const registrarUsuario = async (data) => {
     }
 };
 
-
 //RESERVAS-----------------------------------------------------------
-
 
 export const getReservas = async () => {
     try {
@@ -187,7 +185,6 @@ export const deleteReserva = async (id) => {
 };
 
 export const postReserva = async (data) => {
-    const { userId, habId, informacion } = data;
     try {
         const res = await fetch(api_reservas, {
             method: "POST",
@@ -195,43 +192,106 @@ export const postReserva = async (data) => {
                 "Content-Type": "application/json",
                 "x-token": JSON.parse(sessionStorage.getItem("usuario")).token,
             },
-            body: JSON.stringify({ userId, habId, informacion }),
+            body: JSON.stringify(data),
         });
         return res;
     } catch (error) {
         console.error(error);
+        return error;
     }
 };
 
-const checkFree = (entrada, salida, fecha) => {
-    if (fecha[0][0] === "") {
-        return true;
-    } else {
-        return salida < fecha[0][0] || entrada > fecha[0][1];
-    }
-};
+function verificarRangoFechas(reservaIngreso, reservaSalida, ingreso, salida) {
+    // Verificar superposición parcial
+    const superposicionParcial =
+        reservaSalida >= ingreso && reservaIngreso <= salida;
 
-const obtenerHabDis = async (habitaciones, entrada, salida) => {
-    console.log(hab.fechaOcupada[0])
-    const disponibles = habitaciones.filter((hab) =>
-        checkFree(entrada, salida, hab.fechaOcupada[0])
-    );
-    return disponibles;
-};
+    // Verificar si está completamente contenido
+    const contenidoCompleto =
+        reservaIngreso <= ingreso && reservaSalida >= salida;
 
-export const check = async (camas, entrada, salida) => {
-    try {
-        const res = await getHabitaciones();
-        const data = await res.json();
+    // Devolver true si cualquiera de las condiciones se cumple
+    return superposicionParcial || contenidoCompleto;
+}
 
-        const activas = data.filter((item) => item.disponible === true);
-        const filteredCama = activas.filter((hab) => hab.camas >= camas);
-        if (entrada > salida) {
-            throw new Error("Fecha no valida");
+async function obtenerHabitacionesCorrectas(personas) {
+    const res = await getHabitaciones();
+    const data = await res.json();
+    return data.filter((item) => item.activa && item.personas === personas);
+}
+
+function verificarFechas(entrada, salida) {
+    const hoy = new Date();
+    const entradaReserva = new Date(entrada);
+    const salidaReserva = new Date(salida);
+    if (entradaReserva < hoy)
+        throw new Error(
+            "La fecha de entrada no puede ser anterior a la fecha actual"
+        );
+    if (salidaReserva <= entradaReserva)
+        throw new Error(
+            "La fecha de salida debe ser posterior a la fecha de entrada"
+        );
+}
+
+function filtrarHabitacionesOcupadas(reservas, habitaciones, entrada, salida) {
+    const ocupadas = [];
+    for (const reserva of reservas) {
+        for (const hab of habitaciones) {
+            if (
+                reserva.numeroHab === hab.numero &&
+                verificarRangoFechas(
+                    reserva.ingreso,
+                    reserva.salida,
+                    entrada,
+                    salida
+                )
+            ) {
+                ocupadas.push(hab.numero);
+            }
         }
-        const habitaciones = await obtenerHabDis(filteredCama, entrada, salida);
-        return habitaciones;
+    }
+    return ocupadas;
+}
+
+export const check = async (personas, entrada, salida) => {
+    try {
+        const habitacionesDisponibles = await obtenerHabitacionesCorrectas(
+            personas
+        );
+        verificarFechas(entrada, salida);
+        const res = await getReservas();
+        const reservas = await res.json();
+        if (reservas.length === 0) return habitacionesDisponibles;
+        const ocupadas = filtrarHabitacionesOcupadas(
+            reservas,
+            habitacionesDisponibles,
+            entrada,
+            salida
+        );
+        return habitacionesDisponibles.filter(
+            (hab) => !ocupadas.includes(hab.numero)
+        );
     } catch (error) {
         console.error(error);
+        return error;
     }
+};
+
+export const calcularMonto = (entrada, salida, habitacion, disponibles) => {
+    const ingresoReserva = new Date(entrada);
+    const salidaReserva = new Date(salida);
+    //calcular monto de reserva
+    const diferenciaMilisegundos =
+        salidaReserva.getTime() - ingresoReserva.getTime();
+
+    // Convierte la diferencia de milisegundos a días
+    const dias = diferenciaMilisegundos / (1000 * 3600 * 24);
+
+    // Redondea hacia arriba la cantidad de días si es necesario
+    const cantidadDias = Math.ceil(dias);
+    //obtener precio de habitacion
+    const precioHab = disponibles.find((item) => item.numero === habitacion);
+    //precio
+    return precioHab.precio * cantidadDias;
 };

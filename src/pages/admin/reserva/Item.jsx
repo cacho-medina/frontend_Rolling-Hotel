@@ -1,5 +1,5 @@
 import { Modal, Button } from "react-bootstrap";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Options from "../Options";
 import { deleteReserva, getReservas } from "../../../helpers/queries";
 import Swal from "sweetalert2";
@@ -13,17 +13,39 @@ function DetalleModal(props) {
             centered
         >
             <Modal.Header>
-                <Modal.Title id="contained-modal-title-vcenter">
+                <Modal.Title
+                    id="contained-modal-title-vcenter"
+                    className="text-center fw-bold"
+                >
                     Detalles de reserva
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body className="px-1 px-md-2">
-                <h4 className="fw-bold mb-4">User Id</h4>
-                <p>{props.reserva.userId}</p>
-                <h4 className="fw-bold mb-4">hab Id</h4>
-                <p>{props.reserva.habId || "No hay informacion adicional"}</p>
-                <h4 className="fw-bold mb-4">Informacion adicional</h4>
-                <p>{props.reserva.informacion || "No hay informacion adicional"}</p>
+                <p>
+                    <span className="fw-bold">*Huesped</span>:{" "}
+                    {props.reserva.nombreHuesped}
+                </p>
+                <p>
+                    <span className="fw-bold">*Habitacion</span>: numero{" "}
+                    {props.reserva.numeroHab}
+                </p>
+                <p>
+                    <span className="fw-bold">*Informacion</span>:{" "}
+                    {props.reserva.informacion ||
+                        "No hay informacion adicional"}
+                </p>
+                <p>
+                    <span className="fw-bold">*Ingreso</span>:{" "}
+                    {props.reserva.ingreso}
+                </p>
+                <p>
+                    <span className="fw-bold">*Salida</span>:{" "}
+                    {props.reserva.salida}
+                </p>
+                <p>
+                    <span className="fw-bold">*Monto</span>: $
+                    {props.reserva.monto}
+                </p>
             </Modal.Body>
             <Modal.Footer>
                 <Button onClick={props.onHide} variant="danger">
@@ -70,7 +92,6 @@ function Item({ reserva, setReservas }) {
             }
         });
     };
-    useEffect(() => {}, []);
     return (
         <>
             <DetalleModal
@@ -79,6 +100,9 @@ function Item({ reserva, setReservas }) {
                 reserva={reserva}
             />
             <tr>
+                <td>{reserva.numeroHab}</td>
+                <td>{reserva.nombreHuesped}</td>
+                <td>${reserva.monto}</td>
                 <td>
                     <Button
                         variant=""

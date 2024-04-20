@@ -11,14 +11,20 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaHome } from "react-icons/fa";
 import { registrarUsuario } from "../../helpers/queries.js";
+import { FaRegEye } from "react-icons/fa";
 
 function Signup() {
     const [show, setShow] = useState(false);
+    const [ver, setVer] = useState(false);
     const [message, setMessage] = useState("");
+    function verContraseña() {
+        setVer(!ver);
+    }
     const navigate = useNavigate();
     const {
         register,
         handleSubmit,
+        getValues,
         formState: { errors },
     } = useForm();
 
@@ -144,6 +150,10 @@ function Signup() {
                         type="email"
                         {...register("email", {
                             required: "ingrese su correo electronico",
+                            pattern: {
+                                value: /.+\@.+\..+/,
+                                message: "ingrese un correo valido",
+                            },
                         })}
                     ></Form.Control>
                     {errors.email && (
@@ -153,29 +163,101 @@ function Signup() {
                     )}
                 </Form.Group>
                 <Form.Group controlId="password">
-                    <Form.Control
-                        placeholder="contraseña"
-                        /* type="password" */
-                        {...register("password", {
-                            required: "ingrese su contraseña",
-                            minLength: {
-                                value: 8,
-                                message: "Ingrese como minimo 8 caracteres",
-                            },
-                            maxLength: {
-                                value: 16,
-                                message: "ingrese un maximo de 16 caracteres",
-                            },
-                            pattern: {
-                                value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{8,16}$/,
-                                message:
-                                    "la contraseña debe tener al menos una letra minuscula, una letra mayuscula, un numero y un caracter especial",
-                            },
-                        })}
-                    ></Form.Control>
+                    <div className="mb-2 d-flex gap-1">
+                        <Form.Control
+                            placeholder="contraseña"
+                            type={ver ? "text" : "password"}
+                            {...register("password", {
+                                required: "ingrese su contraseña",
+                                minLength: {
+                                    value: 8,
+                                    message: "Ingrese como minimo 8 caracteres",
+                                },
+                                maxLength: {
+                                    value: 16,
+                                    message:
+                                        "ingrese un maximo de 16 caracteres",
+                                },
+                                pattern: {
+                                    value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{8,16}$/,
+                                    message:
+                                        "la contraseña debe tener al menos una letra minuscula, una letra mayuscula, un numero y un caracter especial",
+                                },
+                            })}
+                        ></Form.Control>
+                        <div className="text-start">
+                            <label
+                                htmlFor="verPassword"
+                                className="btn btn-outline-light"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="verPassword"
+                                    hidden
+                                    onChange={() => setVer(!ver)}
+                                />
+                                <span>
+                                    <FaRegEye />
+                                </span>
+                            </label>
+                        </div>
+                    </div>
                     {errors.password && (
                         <Form.Text className="text-light-red fw-bold text-end">
                             {errors.password.message}
+                        </Form.Text>
+                    )}
+                </Form.Group>
+                <Form.Group controlId="password2">
+                    <div className="mb-2 d-flex gap-1">
+                        <Form.Control
+                            type={ver ? "text" : "password"}
+                            placeholder="repetir contraseña"
+                            {...register("password2", {
+                                required: "repita su contraseña",
+                                minLength: {
+                                    value: 8,
+                                    message: "Ingrese como minimo 8 caracteres",
+                                },
+                                maxLength: {
+                                    value: 16,
+                                    message:
+                                        "ingrese un maximo de 16 caracteres",
+                                },
+                                pattern: {
+                                    value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*.-]).{8,16}$/,
+                                    message:
+                                        "la contraseña debe tener al menos una letra minuscula, una letra mayuscula, un numero y un caracter especial",
+                                },
+                                validate: function (value) {
+                                    if (value !== getValues("password")) {
+                                        return "las contraseñas son diferentes";
+                                    } else {
+                                        return true;
+                                    }
+                                },
+                            })}
+                        ></Form.Control>
+                        <div className="text-start">
+                            <label
+                                htmlFor="verPassword"
+                                className="btn btn-outline-light"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="verPassword"
+                                    hidden
+                                    onChange={() => setVer(!ver)}
+                                />
+                                <span>
+                                    <FaRegEye />
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                    {errors.password2 && (
+                        <Form.Text className="text-light-red fw-bold text-end">
+                            {errors.password2.message}
                         </Form.Text>
                     )}
                 </Form.Group>

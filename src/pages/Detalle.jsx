@@ -95,8 +95,8 @@ function Detalle() {
                     </h2>
                     <p className="text-wrap">{habitacion.descripcion}</p>
                     <p>
-                        <span className="fw-bold">camas:</span>{" "}
-                        {habitacion.camas}
+                        <span className="fw-bold">personas:</span>{" "}
+                        {habitacion.personas}
                     </p>
                     <p>
                         <span className="fw-bold">precio:</span> $

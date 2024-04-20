@@ -1,12 +1,10 @@
 import Table from "react-bootstrap/Table";
-import { Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getReservas } from "../../../helpers/queries";
 import Item from "./Item";
-import Cargar from "./Cargar";
 
 function Reserva() {
-    const [modalShow, setModalShow] = useState(false);
     const [reservas, setReservas] = useState([]);
     const obtenerReservas = async () => {
         const res = await getReservas();
@@ -20,11 +18,6 @@ function Reserva() {
     }, []);
     return (
         <>
-            <Cargar
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-                obtenerReservas={obtenerReservas}
-            />
             <div className="grow">
                 <div className="bg-danger py-5">
                     <h1 className="display-1 text-light text-center title">
@@ -33,13 +26,12 @@ function Reserva() {
                 </div>
                 <div className="container px-1 py-4 px-md-4">
                     <div className="d-flex justify-content-center justify-content-md-start align-items-center">
-                        <Button
-                            variant="danger"
-                            onClick={() => setModalShow(true)}
-                            className="fw-bold"
+                        <Link
+                            to="/panel/registrar-reserva"
+                            className="fw-bold btn btn-danger"
                         >
                             Nueva Reserva
-                        </Button>
+                        </Link>
                     </div>
                     <hr />
                     <Table
@@ -49,6 +41,9 @@ function Reserva() {
                     >
                         <thead className="table-secondary">
                             <tr>
+                                <th>habitacion</th>
+                                <th>huesped</th>
+                                <th>monto</th>
                                 <th>detalles</th>
                                 <th>opciones</th>
                             </tr>
@@ -56,7 +51,7 @@ function Reserva() {
                         <tbody>
                             {!reservas.length ? (
                                 <tr>
-                                    <td colSpan={2} className="text-danger">
+                                    <td colSpan={4} className="text-danger">
                                         No hay reservas registradas
                                     </td>
                                 </tr>

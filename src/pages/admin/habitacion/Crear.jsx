@@ -92,7 +92,7 @@ function Crear({ title, editar }) {
 
     return (
         <div className="container grow py-4">
-            <h1 className="display-1 ff-nunito fw-bold text-orange text-center">
+            <h1 className="display-1 fw-bold text-center">
                 {title} Habitacion
             </h1>
             <hr />
