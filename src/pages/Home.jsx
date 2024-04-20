@@ -49,7 +49,7 @@ export default function Home() {
                     </p>
                 </div>
                 <Link
-                    to="/panel"
+                    to="/panel/registrar-reserva"
                     className="btn w-250 mx-auto py-2 mx-md-0 btn-dark rounded-0 fw-bold fs-20"
                 >
                     Iniciar reserva
@@ -109,14 +109,14 @@ export default function Home() {
                 </Row>
             </section>
             <div className="bg-beige px-2 py-5 p-md-5 d-flex flex-column justify-content-center text-center gap-4 flex-md-row justify-content-md-evenly">
-                    <h2 className="fw-bold m-0 fs-3">Tenes alguna duda?</h2>
-                    <Link
-                        to="/contacto"
-                        className="btn w-250 mx-auto mx-md-0 btn-dark rounded-0 fw-bold fs-20"
-                    >
-                        Contactanos
-                    </Link>
-                </div>
+                <h2 className="fw-bold m-0 fs-3">Tenes alguna duda?</h2>
+                <Link
+                    to="/contacto"
+                    className="btn w-250 mx-auto mx-md-0 btn-dark rounded-0 fw-bold fs-20"
+                >
+                    Contactanos
+                </Link>
+            </div>
         </main>
     );
 }

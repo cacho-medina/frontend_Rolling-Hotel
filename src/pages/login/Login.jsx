@@ -10,10 +10,12 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import { FaHome } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
 import { login } from "../../helpers/auth";
 
 function Login({ setUserLogged }) {
     const [show, setShow] = useState(false);
+    const [ver, setVer] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const {
@@ -22,7 +24,9 @@ function Login({ setUserLogged }) {
         formState: { errors },
         reset,
     } = useForm();
-
+    function verContraseña() {
+        setVer(!ver);
+    }
     const onSubmit = async (data) => {
         const res = await login(data);
         if (!res.ok) {
@@ -83,9 +87,12 @@ function Login({ setUserLogged }) {
                 <Form.Group controlId="email">
                     <Form.Control
                         placeholder="correo"
-                        type="email"
                         {...register("email", {
                             required: "ingrese su correo electronico",
+                            pattern: {
+                                value: /.+\@.+\..+/,
+                                message: "ingrese un correo valido",
+                            },
                         })}
                     ></Form.Control>
                     {errors.email && (
@@ -95,17 +102,35 @@ function Login({ setUserLogged }) {
                     )}
                 </Form.Group>
                 <Form.Group controlId="password">
-                    <Form.Control
-                        placeholder="contraseña"
-                        /* type="password" */
-                        {...register("password", {
-                            required: "ingrese su contraseña",
-                            minLength: {
-                                value: 8,
-                                message: "Ingrese como minimo 8 caracteres",
-                            },
-                        })}
-                    ></Form.Control>
+                    <div className="d-flex gap-1">
+                        <Form.Control
+                            placeholder="contraseña"
+                            type={ver ? "text" : "password"}
+                            {...register("password", {
+                                required: "ingrese su contraseña",
+                                minLength: {
+                                    value: 8,
+                                    message: "Ingrese como minimo 8 caracteres",
+                                },
+                            })}
+                        ></Form.Control>
+                        <div className="text-start">
+                            <label
+                                htmlFor="verPassword"
+                                className="btn btn-outline-light"
+                            >
+                                <input
+                                    type="checkbox"
+                                    id="verPassword"
+                                    hidden
+                                    onChange={() => setVer(!ver)}
+                                />
+                                <span>
+                                    <FaRegEye />
+                                </span>
+                            </label>
+                        </div>
+                    </div>
                     {errors.password && (
                         <Form.Text className="text-light-red fw-bolder">
                             {errors.password.message}

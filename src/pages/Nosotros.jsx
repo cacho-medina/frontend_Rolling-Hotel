@@ -1,5 +1,5 @@
 import { Container } from "react-bootstrap";
-import staff from "../assets/staff.webp";
+import staff from "../assets/staff2.webp";
 import perfil from "../assets/perfil.jpeg";
 import { GoArrowDown } from "react-icons/go";
 import { FaGithub } from "react-icons/fa";
@@ -15,8 +15,8 @@ function Nosotros() {
                 </h1>
             </div>
             <div className="d-flex align-items-stretch max-h">
-                <div className="bg-special-blue arrow w-50 d-flex align-items-center justify-content-center">
-                    <span className="fs-72 text-light">
+                <div className="bg-beige arrow w-50 d-flex align-items-center justify-content-center">
+                    <span className="fs-72 text-dark">
                         <GoArrowDown />
                     </span>
                 </div>
@@ -55,25 +55,6 @@ function Nosotros() {
                                     to="https://linkedin.com/in/joaquin-medina22"
                                     className="mx-2 text-special-blue"
                                 >
-                                    <FaLinkedin />
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="col text-center">
-                            <img
-                                src={perfil}
-                                alt="foto Joaquin Medina"
-                                className="img-fluid rounded-circle"
-                                width="200px"
-                            />
-                            <p className="fw-bold display-6 mt-3">
-                                Juan Mercado
-                            </p>
-                            <div className="fs-3">
-                                <Link to="#" className="mx-2 text-special-blue">
-                                    <FaGithub />
-                                </Link>
-                                <Link to="#" className="mx-2 text-special-blue">
                                     <FaLinkedin />
                                 </Link>
                             </div>

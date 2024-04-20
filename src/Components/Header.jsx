@@ -6,6 +6,7 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import logo from "../assets/hotel.svg";
 import { Link } from "react-router-dom";
 import { MdLocalHotel } from "react-icons/md";
+import { FaUserCircle } from "react-icons/fa";
 import Swal from "sweetalert2";
 
 function Header({ loggedUser, setUserLogged, path }) {
@@ -112,7 +113,10 @@ function Header({ loggedUser, setUserLogged, path }) {
                                                 to="/panel"
                                                 className="text-decoration-none btn btn-blue rounded-0 px-4"
                                             >
-                                                Dashboard
+                                                <span>
+                                                    <FaUserCircle />
+                                                </span>{" "}
+                                                Usuario
                                             </Link>
                                         )}
                                     </>
