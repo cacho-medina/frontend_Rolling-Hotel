@@ -11,15 +11,14 @@ import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { FaHome } from "react-icons/fa";
 import { registrarUsuario } from "../../helpers/queries.js";
+import { login } from "../../helpers/auth.js";
 import { FaRegEye } from "react-icons/fa";
 
-function Signup() {
+function Signup({ setUserLogged }) {
     const [show, setShow] = useState(false);
     const [ver, setVer] = useState(false);
     const [message, setMessage] = useState("");
-    function verContraseña() {
-        setVer(!ver);
-    }
+
     const navigate = useNavigate();
     const {
         register,
@@ -33,18 +32,37 @@ function Signup() {
         data.esAdmin = false;
         const res = await registrarUsuario(data);
         if (!res.ok) {
-            setShow(true);
             const respuesta = await res.json();
             setMessage(respuesta.message);
+            setShow(true);
         } else {
-            Swal.fire({
-                title: "Registro completado",
-                icon: "success",
-                background: "#1c1c21",
-                iconColor: "#534ff2",
-                color: "#fff",
-            });
-            navigate("/");
+            const res = await login(data);
+            if (!res.ok) {
+                const respuesta = await res.json();
+                setMessage(respuesta.message);
+                setShow(true);
+            } else {
+                const user = await res.json();
+                sessionStorage.setItem(
+                    "usuario",
+                    JSON.stringify({
+                        email: user.email,
+                        nombre: user.nombre,
+                        id: user.id,
+                        esAdmin: user.esAdmin,
+                        token: user.token,
+                    })
+                );
+                setUserLogged(user);
+                Swal.fire({
+                    title: "Registro completado",
+                    icon: "success",
+                    background: "#1c1c21",
+                    iconColor: "#534ff2",
+                    color: "#fff",
+                });
+                navigate("/panel");
+            }
         }
     };
 
@@ -240,12 +258,12 @@ function Signup() {
                         ></Form.Control>
                         <div className="text-start">
                             <label
-                                htmlFor="verPassword"
+                                htmlFor="verPassword2"
                                 className="btn btn-outline-light"
                             >
                                 <input
                                     type="checkbox"
-                                    id="verPassword"
+                                    id="verPassword2"
                                     hidden
                                     onChange={() => setVer(!ver)}
                                 />
