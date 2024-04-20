@@ -7,7 +7,7 @@ import { MdOutlineNightlife } from "react-icons/md";
 
 function CarouselImages() {
     return (
-        <Carousel fade>
+        <Carousel fade controls={false}>
             <Carousel.Item>
                 <img
                     src={slide1}

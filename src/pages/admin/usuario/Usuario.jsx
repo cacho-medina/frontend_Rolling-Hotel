@@ -10,7 +10,9 @@ function Administrador() {
         const res = await getUsuarios();
         if (res.ok) {
             const data = await res.json();
-            setUsuarios(data);
+            const email = JSON.parse(sessionStorage.getItem("usuario")).email;
+            const usuarios = data.filter((item) => item.email !== email);
+            setUsuarios(usuarios);
         }
     };
 
@@ -22,7 +24,7 @@ function Administrador() {
             <div className="bg-secondary py-5">
                 <h1 className="display-1 text-light text-center title">
                     <span>
-                    <FaUser />
+                        <FaUser />
                     </span>
                     Usuarios
                 </h1>

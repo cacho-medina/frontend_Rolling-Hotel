@@ -22,7 +22,7 @@ function ImgModal(props) {
                 <p>{props.descripcion}</p>
                 <h4 className="fw-bold mb-4">Detalles</h4>
                 <p>ubicacion: piso {props.piso}</p>
-                <p>cantidad de camas: {props.camas}</p>
+                <p>cantidad de personas: {props.personas}</p>
                 <h4 className="fw-bold mb-4">Imagen</h4>
                 <div className="d-flex justify-content-center">
                     <img
@@ -43,9 +43,9 @@ function ImgModal(props) {
 
 function Item({ habitacion, setHabitaciones }) {
     const {
-        camas,
+        personas,
         descripcion,
-        disponible,
+        activa,
         imagen,
         numero,
         piso,
@@ -93,13 +93,13 @@ function Item({ habitacion, setHabitaciones }) {
                 onHide={() => setModalShow(false)}
                 numero={numero}
                 img={imagen}
-                camas={camas}
+                personas={personas}
                 piso={piso}
                 descripcion={descripcion}
             />
-            <tr className={`${disponible ? "" : "table-danger"}`}>
+            <tr className={`${activa ? "" : "table-danger"}`}>
                 <td className="text-truncate">{numero}</td>
-                <td className="text-truncate">{disponible ? "si" : "no"}</td>
+                <td className="text-truncate">{activa ? "si" : "no"}</td>
                 <td className="text-truncate">$ {precio}</td>
                 <td>
                     <Button

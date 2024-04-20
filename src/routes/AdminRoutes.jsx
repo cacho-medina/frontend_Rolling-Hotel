@@ -6,6 +6,7 @@ import Usuario from "../pages/admin/usuario/Usuario";
 import Crear from "../pages/admin/habitacion/Crear";
 import Formulario from "../pages/admin/usuario/Formulario";
 import Error from "../pages/Error";
+import Cargar from "../pages/admin/reserva/Cargar";
 
 function AdminRoutes() {
     return (
@@ -19,6 +20,7 @@ function AdminRoutes() {
                     element={<Formulario />}
                 ></Route>
                 <Route path="/reserva" element={<Reserva />}></Route>
+                <Route path="/registrar-reserva" element={<Cargar />}></Route>
                 <Route path="/habitacion" element={<Habitacion />}></Route>
                 <Route
                     exac

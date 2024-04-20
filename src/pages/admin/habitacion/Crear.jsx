@@ -30,11 +30,11 @@ function Crear({ title, editar }) {
             const data = await res.json();
             setValue("numero", data.numero);
             setValue("piso", data.piso);
-            setValue("camas", data.camas);
+            setValue("personas", data.personas);
             setValue("descripcion", data.descripcion);
             setValue("imagen", data.imagen);
             setValue("precio", data.precio);
-            setValue("disponible", data.disponible);
+            setValue("activa", data.activa);
         }
     };
 
@@ -92,7 +92,7 @@ function Crear({ title, editar }) {
 
     return (
         <div className="container grow py-4">
-            <h1 className="display-1 ff-nunito fw-bold text-orange text-center">
+            <h1 className="display-1 fw-bold text-center">
                 {title} Habitacion
             </h1>
             <hr />
@@ -163,11 +163,11 @@ function Crear({ title, editar }) {
                         </Form.Text>
                     )}
                 </Form.Group>
-                <Form.Group controlId="camas">
-                    <Form.Label>Cantidad de camas*</Form.Label>
+                <Form.Group controlId="personas">
+                    <Form.Label>Cantidad de personas*</Form.Label>
                     <Form.Select
-                        {...register("camas", {
-                            required: "ingrese la cantidad de camas",
+                        {...register("personas", {
+                            required: "ingrese la cantidad de personas",
                         })}
                     >
                         <option value="">Seleccione una opcion</option>
@@ -177,9 +177,9 @@ function Crear({ title, editar }) {
                         <option value="4">4</option>
                         <option value="5">5</option>
                     </Form.Select>
-                    {errors.camas && (
+                    {errors.personas && (
                         <Form.Text className="text-danger">
-                            {errors.camas.message}
+                            {errors.personas.message}
                         </Form.Text>
                     )}
                 </Form.Group>
@@ -192,14 +192,14 @@ function Crear({ title, editar }) {
                         {...register("precio", {
                             required: "ingrese un valor",
                             min: {
-                                value: 2500,
+                                value: 5000,
                                 message:
-                                    "El precio debe ser mayor o igual a 2500",
+                                    "El precio debe ser mayor o igual a 5000",
                             },
                             max: {
-                                value: 10000,
+                                value: 100000,
                                 message:
-                                    "el precio debe ser menor o igual a 10000",
+                                    "el precio debe ser menor o igual a 100000",
                             },
                         })}
                     />
@@ -217,14 +217,14 @@ function Crear({ title, editar }) {
                             required:
                                 "Ingrese una explicacion de la habitacion",
                             minLength: {
-                                value: 50,
+                                value: 30,
                                 message:
-                                    "ingrese una descripcion entre 50 y 300 caracteres",
+                                    "ingrese una descripcion entre 30 y 500 caracteres",
                             },
                             maxLength: {
-                                value: 300,
+                                value: 500,
                                 message:
-                                    "ingrese una descripcion entre 50 y 300 caracteres",
+                                    "ingrese una descripcion entre 30 y 500 caracteres",
                             },
                         })}
                     ></Form.Control>
@@ -254,19 +254,19 @@ function Crear({ title, editar }) {
                         </Form.Text>
                     )}
                 </Form.Group>
-                <Form.Group controlId="disponible">
-                    <Form.Label>Disponibilidad*</Form.Label>
+                <Form.Group controlId="activa">
+                    <Form.Label>Establecer estado de habitacion*</Form.Label>
                     <Form.Select
-                        {...register("disponible", {
+                        {...register("activa", {
                             required: "ingrese la disponibilidad",
                         })}
                     >
-                        <option value="true">Si</option>
-                        <option value="false">No</option>
+                        <option value="true">activa</option>
+                        <option value="false">inactiva</option>
                     </Form.Select>
-                    {errors.disponible && (
+                    {errors.activa && (
                         <Form.Text className="text-danger">
-                            {errors.disponible.message}
+                            {errors.activa.message}
                         </Form.Text>
                     )}
                 </Form.Group>
@@ -275,7 +275,7 @@ function Crear({ title, editar }) {
                     className="btn-naranja align-self-center w-250 fw-bold"
                     type="submit"
                 >
-                    Enviar
+                    {editar ? "Guardar cambios" : "Cargar habitacion"}
                 </Button>
             </Form>
         </div>
