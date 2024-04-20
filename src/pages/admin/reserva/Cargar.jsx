@@ -44,7 +44,9 @@ function Cargar() {
             title: "Deseas finalizar la reserva?",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            background: "#1c1c21",
+            color: "#fff",
+            confirmButtonColor: "#534ff2",
             cancelButtonColor: "#d33",
             confirmButtonText: "Finalizar",
         }).then(async (result) => {
@@ -56,6 +58,8 @@ function Cargar() {
                         title: "Error",
                         text: "Algo salio mal post!",
                         icon: "error",
+                        background: "#1c1c21",
+                        color: "#fff",
                     });
                     const error = await res.json();
                     console.log(error);
@@ -64,6 +68,8 @@ function Cargar() {
                         title: "Listo!",
                         text: "La reserva fue cargada con exito!",
                         icon: "success",
+                        background: "#1c1c21",
+                        color: "#fff",
                     });
                     reset();
                     navigate("/panel");

@@ -61,7 +61,7 @@ function App() {
                     path="/login"
                     element={<Login setUserLogged={setUserLogged} />}
                 />
-                <Route exac path="/sign-up" element={<Signup />} />
+                <Route exac path="/sign-up" element={<Signup setUserLogged={setUserLogged}/>} />
                 <Route path="/*" element={<Error />}></Route>
             </Routes>
             {pathname !== "/login" && pathname !== "/sign-up" && <Footer />}

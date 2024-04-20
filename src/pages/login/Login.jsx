@@ -24,9 +24,7 @@ function Login({ setUserLogged }) {
         formState: { errors },
         reset,
     } = useForm();
-    function verContraseña() {
-        setVer(!ver);
-    }
+
     const onSubmit = async (data) => {
         const res = await login(data);
         if (!res.ok) {
