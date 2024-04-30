@@ -140,8 +140,6 @@ export const registrarUsuario = async (data) => {
     }
 };
 
-//RESERVAS-----------------------------------------------------------
-
 export const getReservas = async () => {
     try {
         const res = await fetch(api_reservas);
@@ -202,15 +200,12 @@ export const postReserva = async (data) => {
 };
 
 function verificarRangoFechas(reservaIngreso, reservaSalida, ingreso, salida) {
-    // Verificar superposición parcial
     const superposicionParcial =
         reservaSalida >= ingreso && reservaIngreso <= salida;
 
-    // Verificar si está completamente contenido
     const contenidoCompleto =
         reservaIngreso <= ingreso && reservaSalida >= salida;
 
-    // Devolver true si cualquiera de las condiciones se cumple
     return superposicionParcial || contenidoCompleto;
 }
 
@@ -281,17 +276,13 @@ export const check = async (personas, entrada, salida) => {
 export const calcularMonto = (entrada, salida, habitacion, disponibles) => {
     const ingresoReserva = new Date(entrada);
     const salidaReserva = new Date(salida);
-    //calcular monto de reserva
     const diferenciaMilisegundos =
         salidaReserva.getTime() - ingresoReserva.getTime();
 
-    // Convierte la diferencia de milisegundos a días
     const dias = diferenciaMilisegundos / (1000 * 3600 * 24);
 
-    // Redondea hacia arriba la cantidad de días si es necesario
     const cantidadDias = Math.ceil(dias);
-    //obtener precio de habitacion
     const precioHab = disponibles.find((item) => item.numero === habitacion);
-    //precio
+
     return precioHab.precio * cantidadDias;
 };

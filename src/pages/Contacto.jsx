@@ -91,6 +91,13 @@ function Contacto() {
                                             value: 3,
                                             message: "Ingrese un nombre valido",
                                         },
+                                        validate: (value) => {
+                                            if (/\d/.test(value)) {
+                                                return "Ingrese solo texto";
+                                            } else {
+                                                return true;
+                                            }
+                                        },
                                     })}
                                 ></Form.Control>
                                 {errors.nombre && (
@@ -109,6 +116,13 @@ function Contacto() {
                                             message:
                                                 "Ingrese un apellido valido",
                                         },
+                                        validate: (value) => {
+                                            if (/\d/.test(value)) {
+                                                return "Ingrese solo texto";
+                                            } else {
+                                                return true;
+                                            }
+                                        },
                                     })}
                                 ></Form.Control>
                                 {errors.apellido && (
@@ -120,7 +134,6 @@ function Contacto() {
                             <Form.Group>
                                 <Form.Control
                                     placeholder="Correo"
-                                    type="email"
                                     {...register("email", {
                                         required: "Ingrese su correo",
                                         pattern: {
